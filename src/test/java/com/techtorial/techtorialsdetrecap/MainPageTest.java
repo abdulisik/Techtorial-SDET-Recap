@@ -3,7 +3,6 @@ package com.techtorial.techtorialsdetrecap;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -13,7 +12,7 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MainPageTest {
+class MainPageTest {
   private WebDriver driver;
   private MainPage mainPage;
 
@@ -22,7 +21,7 @@ public class MainPageTest {
     driver = new ChromeDriver();
     driver.manage().window().maximize();
     driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-    driver.get("https://www.jetbrains.com/");
+    driver.get("https://microfeed.techtorialacademy.net/");
 
     mainPage = new MainPage(driver);
   }
@@ -32,35 +31,26 @@ public class MainPageTest {
     driver.quit();
   }
 
-  @Test
-  public void search() {
-    mainPage.searchButton.click();
-
-    WebElement searchField = driver.findElement(By.cssSelector("[data-test='search-input']"));
-    searchField.sendKeys("Selenium");
-
-    WebElement submitButton = driver.findElement(By.cssSelector("button[data-test='full-search-button']"));
-    submitButton.click();
-
-    WebElement searchPageField = driver.findElement(By.cssSelector("input[data-test='search-input']"));
-    assertEquals("Selenium", searchPageField.getAttribute("value"));
-  }
 
   @Test
-  public void toolsMenu() {
-    mainPage.toolsMenu.click();
+  void mainTitleTest() {
+    // User Story 1:
+    // As a user, I want to be able to visit the homepage
+    // so that I can read about the company
+    WebElement title = mainPage.mainTitle;
+    assertTrue(title.isDisplayed(), "Title is not displayed");
+    assertEquals("Techtorial Microfeed", title.getText(),
+            "Title's text is unexpected");
 
-    WebElement menuPopup = driver.findElement(By.cssSelector("div[data-test='main-submenu']"));
-    assertTrue(menuPopup.isDisplayed());
+    WebElement aboutTitle = mainPage.aboutTitle;
+    assertTrue(aboutTitle.isDisplayed(), "About title is not displayed");
+    assertEquals("About", aboutTitle.getText(), "About title's text is unexpected");
+
+    WebElement aboutDetails = mainPage.aboutDetails;
+    assertTrue(aboutDetails.isDisplayed(), "About details is not displayed");
+    assertEquals("Techtorial Microfeed description example.",
+            aboutDetails.getText(),
+            "About details' text is unexpected");
   }
 
-  @Test
-  public void navigationToAllTools() {
-    mainPage.seeDeveloperToolsButton.click();
-    mainPage.findYourToolsButton.click();
-
-    WebElement productsList = driver.findElement(By.id("products-page"));
-    assertTrue(productsList.isDisplayed());
-    assertEquals("All Developer Tools and Products by JetBrains", driver.getTitle());
-  }
 }

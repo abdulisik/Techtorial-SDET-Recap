@@ -5,21 +5,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-// page_url = https://www.jetbrains.com/
+// page_url = https://microfeed.techtorialacademy.net/
 public class MainPage {
-  @FindBy(xpath = "//*[@data-test-marker='Developer Tools']")
-  public WebElement seeDeveloperToolsButton;
+  @FindBy(xpath = "//h1")
+  public WebElement mainTitle; // Techtorial Microfeed
 
-  @FindBy(xpath = "//*[@data-test='suggestion-action']")
-  public WebElement findYourToolsButton;
+  @FindBy(xpath = "//h2[.='About']") // Contributed by Radu Muresan
+  public WebElement aboutTitle; // About
 
-  @FindBy(xpath = "//div[@data-test='main-menu-item' and @data-test-marker = 'Developer Tools']")
-  public WebElement toolsMenu;
+  @FindBy(xpath = "//div/p") // Contributed by Rox M
+  public WebElement aboutDetails;
 
-  @FindBy(css = "[data-test='site-header-search-action']")
-  public WebElement searchButton;
-
-  public MainPage(WebDriver driver) {
+  MainPage(WebDriver driver) {
     PageFactory.initElements(driver, this);
   }
 }
