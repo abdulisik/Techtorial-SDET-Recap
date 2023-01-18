@@ -8,13 +8,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MainPageTest {
   private WebDriver driver;
   private MainPage mainPage;
+  private Random random = new Random();
 
   @BeforeEach
   public void setUp() {
@@ -51,6 +56,34 @@ class MainPageTest {
     assertEquals("Techtorial Microfeed description example.",
             aboutDetails.getText(),
             "About details' text is unexpected");
+  }
+
+  @Test
+  void postClickTest() {
+    // As a user,
+    // I want to see and click on the latest posts on the website
+    // so that I can follow the news
+    List<WebElement> posts = mainPage.posts;
+    assertFalse(posts.isEmpty(), "There are no posts on the website");
+
+    // Randomly choose one of the posts
+    int index = random.nextInt(posts.size());
+    WebElement post = posts.get(index);
+    assertFalse(post.getText().isBlank(), "Selected post does not have a title or a date");
+
+    // Assert the href before clicking on it
+    assertNotNull(post.getAttribute("href"), "There's no link");
+    assertFalse(post.getAttribute("href").isBlank(),
+            "Selected post does not have a link");
+
+    // Grab the href, compare with the URL after clicking on it
+    String href = post.getAttribute("href");
+    post.click();
+    String currentUrl = driver.getCurrentUrl();
+    assertEquals(href, currentUrl, "Unexpected URL.");
+
+    // Make sure the response is not 404
+    assertFalse(driver.getTitle().contains("404"), "Page cannot be reached");
   }
 
 }
