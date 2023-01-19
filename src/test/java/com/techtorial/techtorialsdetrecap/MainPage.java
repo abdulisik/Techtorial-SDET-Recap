@@ -22,6 +22,9 @@ public class MainPage {
   @FindAll(@FindBy(xpath = "//div[@class='mb-4']/a")) // Contributed by Radu Muresan
   List<WebElement> posts; // Find all posts
 
+  @FindAll(@FindBy(css = "html > body > div > main > section:nth-of-type(3) > div > div > div"))
+  List<WebElement> datesOfPosts;
+
   MainPage(WebDriver driver) {
     PageFactory.initElements(driver, this);
   }

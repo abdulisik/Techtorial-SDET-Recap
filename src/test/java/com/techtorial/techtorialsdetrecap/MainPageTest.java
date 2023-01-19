@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class MainPageTest {
   private WebDriver driver;
   private MainPage mainPage;
-  private Random random = new Random();
+  private final Random random = new Random();
 
   @BeforeEach
   public void setUp() {
@@ -84,6 +84,20 @@ class MainPageTest {
 
     // Make sure the response is not 404
     assertFalse(driver.getTitle().contains("404"), "Page cannot be reached");
+  }
+
+  @Test
+  void postDateTest() {
+    // As a user,
+    // I want to see the date of each post
+    // so that I know how recent they are.
+    var dates = mainPage.datesOfPosts;
+    for (int i = 0; i < dates.size(); i++) {
+      var date = dates.get(i);
+      String text = date.getText();
+      assertNotNull(text, "Post no. " + i + " doesn't have a date.");
+      assertTrue(text.contains(" "), "Post no. " + i + " doesn't have a proper date, space character expected.");
+    }
   }
 
 }
